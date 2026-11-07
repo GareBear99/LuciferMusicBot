@@ -1,0 +1,40 @@
+# Lucifer — wrangler config
+# Deploy with: wrangler deploy
+# Secrets (never in this file, never in the repo):
+#   wrangler secret put DISCORD_TOKEN
+#   wrangler secret put DISCORD_PUBLIC_KEY
+#   wrangler secret put DISCORD_APPLICATION_ID
+# See README.md for the full deploy checklist.
+
+name = "lucifer-music-bot"
+main = "src/index.js"
+compatibility_date = "2026-11-07"
+compatibility_flags = ["nodejs_compat"]
+
+workers_dev = true
+
+[vars]
+# Base URL of the radio Worker that owns the shared queue / song-load state.
+# The radio Worker is built in parallel (HUB repo radio work). Until it exists,
+# point this at the mock in spike/mock-radio.js for local testing, or leave
+# unset — /nowplaying and /queue answer "radio not connected yet" instead of
+# failing. See docs/shared-queue-contract.md for the contract.
+RADIO_STATUS_URL = ""
+# Base URL of the ARC radio submission endpoint (POST /radio/submit).
+# Used by /request. Leave unset until the ARC endpoint is reachable; /request
+# then validates the URL and reports that submissions are not wired up yet.
+RADIO_SUBMIT_URL = ""
+
+# Voice relay (see SPIKE.md): the Worker/DO cannot open UDP sockets, so the
+# last hop to Discord's voice gateway is a minimal relay process that speaks
+# UDP. The DO connects to it as a WebSocket client. Until the relay exists,
+# /join answers honestly that voice playback is not live yet.
+RELAY_URL = ""
+
+[[durable_objects.bindings]]
+name = "GATEWAY"
+class_name = "GatewayDurableObject"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["GatewayDurableObject"]

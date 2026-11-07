@@ -1,0 +1,28 @@
+{
+  "name": "lucifer-music-bot",
+  "version": "0.1.0",
+  "description": "Lucifer - the Discord music bot for TizWildin Entertainment. Plays the 24/7 radio stream in Discord voice channels, powered by Cloudflare + GitHub Pages.",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GareBear99/LuciferMusicBot.git"
+  },
+  "homepage": "https://github.com/GareBear99/LuciferMusicBot#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node spike/run-spike.js",
+    "spike": "node spike/run-spike.js",
+    "relay": "node spike/relay.js",
+    "register-commands": "node scripts/register-commands.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.158.0",
+    "ws": "^8.22.1"
+  }
+}
